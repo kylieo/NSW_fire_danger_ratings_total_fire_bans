@@ -28,6 +28,7 @@ rows.each do |row|
 
 	record = {
 	  name: name,
+	  date: Date.today,
 	  today_fire_danger_rating: today_fire_danger_rating,
 	  today_total_fire_ban: today_total_fire_ban,
 	  tomorrow_fire_danger_rating: tomorrow_fire_danger_rating,
@@ -37,7 +38,7 @@ rows.each do |row|
 
 p record 
 
-	ScraperWiki.save_sqlite([:name], record)
+	ScraperWiki.save_sqlite([:name, :date], record)
 
 end
 
