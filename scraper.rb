@@ -11,28 +11,43 @@ page = agent.get("http://www.rfs.nsw.gov.au/fire-information/fdr-and-tobans")
 
 #name = page.at("table.danger-ratings-table tbody").search("tr").at("td").text
 
-name = page.at("table.danger-ratings-table tbody").search("tr")[0].search("td")[0].text
+rows = page.at("table.danger-ratings-table tbody").search("tr")
 
-today_fire_danger_rating = page.at("table.danger-ratings-table tbody").search("tr")[0].search("td")[1].text
+rows.each do |row|
+	name = row.search("td")[0].text
 
-today_total_fire_ban = page.at("table.danger-ratings-table tbody").search("tr")[0].search("td")[2].text
+	today_fire_danger_rating = row.search("td")[1].text
 
-tomorrow_fire_danger_rating = page.at("table.danger-ratings-table tbody").search("tr")[0].search("td")[3].text
+	today_total_fire_ban = row.search("td")[2].text
 
-tomorrow_total_fire_ban = page.at("table.danger-ratings-table tbody").search("tr")[0].search("td")[4].text
+	tomorrow_fire_danger_rating = row.search("td")[3].text
 
-councils_affected = page.at("table.danger-ratings-table tbody").search("tr")[0].search("td")[5].text
+	tomorrow_total_fire_ban = row.search("td")[4].text
 
-record = {
-  name: name,
-  today_fire_danger_rating: today_fire_danger_rating,
-  today_total_fire_ban: today_total_fire_ban,
-  tomorrow_fire_danger_rating: tomorrow_fire_danger_rating,
-  tomorrow_total_fire_ban: tomorrow_total_fire_ban,
-  councils_affected: councils_affected
-}
+	councils_affected = row.search("td")[5].text
 
-ScraperWiki.save_sqlite([:name], record)
+	record = {
+	  name: name,
+	  today_fire_danger_rating: today_fire_danger_rating,
+	  today_total_fire_ban: today_total_fire_ban,
+	  tomorrow_fire_danger_rating: tomorrow_fire_danger_rating,
+	  tomorrow_total_fire_ban: tomorrow_total_fire_ban,
+	  councils_affected: councils_affected
+	}
+
+p record 
+
+	ScraperWiki.save_sqlite([:name], record)
+
+end
+
+
+
+
+# page.search(:h2).each do |item|
+#   # get the text for the second paragraph in the item element
+#   item.search(:p)[1].text
+# end
 
 # p name
 
@@ -46,7 +61,7 @@ ScraperWiki.save_sqlite([:name], record)
 
 # p today_total_fire_ban		
 
-p record		
+
 
 #
 # # Write out to the sqlite database using scraperwiki library
